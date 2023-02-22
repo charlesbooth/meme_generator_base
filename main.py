@@ -1,11 +1,9 @@
-import pyautogui
 import os
 import time
 
 from selenium.common.exceptions import InvalidArgumentException
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from dotenv import load_dotenv
 
 
 class Imgflip_Paths:
@@ -18,8 +16,8 @@ class Imgflip_Paths:
         'https://imgflip.com/memegenerator'
     new_template_btn = \
         '//*[@id="mm-show-upload"]'
-    select_file_btn = \
-        '//*[@id="mm-upload-file-btn"]'
+    image_url_text_box = \
+        '//*[@id="mm-upload-url"]'
     upload_btn = \
         '//*[@id="mm-upload-btn"]'
     top_text_box = \
@@ -41,23 +39,33 @@ class Imgflip_Paths:
         elem.click()
         time.sleep(pause)
 
+    def input_keys(self, box_path, text, pause=1):
+        try:  
+            elem = \
+                self.driver.find_element(By.XPATH, box_path)
+        except InvalidArgumentException:
+            print('Text box accessed too early.')
+            return
+        elem.send_keys(text)
+        time.sleep(pause)
+
     def click_new_template(self):
         self.click(self.new_template_btn)
-
-    def click_select_file(self):
-        self.click(self.select_file_btn)
 
     def click_upload(self):
         self.click(self.upload_btn)
 
-    def click_top_text(self):
-        self.click(self.top_text_box)
-
-    def click_bottom_text(self):
-        self.click(self.bottom_text_box)
-
     def click_generate(self):
         self.click(self.generate_btn)
+
+    def enter_image_link(self, text):
+        self.input_keys(self.image_url_text_box, text)
+
+    def enter_top_text(self, text):
+        self.input_keys(self.top_text_box, text)
+
+    def enter_bottom_text(self, text):
+        self.input_keys(self.bottom_text_box, text)
 
     def get_result(self):
         try:  
@@ -71,33 +79,22 @@ class Imgflip_Paths:
         print(link)
 
 
-def type_text(text, submit=False):
-    '''types text / optional: submits it with enter key'''
-    pyautogui.write\
-        (text, interval=.01)
-    time.sleep(2)
-    if submit:
-        pyautogui.press('enter')
-        time.sleep(1)
-
-
 def main():
-    '''load .env file and call class'''
-    load_dotenv()
-    path = os.environ.get('image_path')
+    '''test image'''
+    test_image_link = \
+        'https://cdn.discordapp.com/attachments/1047375362289586279/1077857538940350464/test_image.jpg'
+
+    '''call class'''
     flip = Imgflip_Paths()
 
     '''upload image'''
     flip.click_new_template()
-    flip.click_select_file()
-    type_text(path, submit=True)
+    flip.enter_image_link(test_image_link)
     flip.click_upload()
 
     '''fill text'''
-    flip.click_top_text()
-    type_text('my face when')
-    flip.click_bottom_text()
-    type_text('the impostor is sus!!')
+    flip.enter_top_text('mfw(my face when)')
+    flip.enter_bottom_text('when the imposter is sus')
 
     '''generate meme and get link'''
     flip.click_generate()
