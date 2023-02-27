@@ -1,3 +1,5 @@
+from collections import deque
+
 def message():
     msg = '$big chungus~is kind of sus'
     msg = msg[1:].split('~')
@@ -9,9 +11,21 @@ def message():
     print(top_text)
     print(bottom_text)
 
+dq = deque([])
+
+dq.append(('a', 'b', 'c'))
+dq.append(('d', 'e', 'f'))
+
+print(dq)
+
+you_are_up = dq.popleft()
+print(you_are_up)
+print(dq)
+
 
 def main():
-    message()
+    pass
+    #message()
 
 
 if __name__ == '__main__':

@@ -1,4 +1,3 @@
-import os
 import time
 
 from selenium.common.exceptions import InvalidArgumentException as SeleniumInvalidArgument
@@ -56,15 +55,15 @@ class Imgflip_Paths:
 
     def click_new_template(self):
         self.click\
-            (self.new_template_btn)
+            (self.new_template_btn, pause=0)
 
     def click_upload(self):
         self.click\
-            (self.upload_btn)
+            (self.upload_btn, pause=0)
 
     def click_generate(self):
         self.click\
-            (self.generate_btn)
+            (self.generate_btn, pause=2)
 
     def enter_image_link(self, text):
         self.input_keys\
@@ -72,11 +71,11 @@ class Imgflip_Paths:
 
     def enter_top_text(self, text):
         self.input_keys\
-            (self.top_text_box, text)
+            (self.top_text_box, text, pause=0)
 
     def enter_bottom_text(self, text):
         self.input_keys\
-            (self.bottom_text_box, text)
+            (self.bottom_text_box, text, pause=0)
 
     def get_result(self):
         try:  
@@ -90,25 +89,25 @@ class Imgflip_Paths:
         return link
 
 
-def make_meme(image_link, top_text, bottom_text):
-    '''call class'''
+def make_meme(image_link, top_text, bottom_text=''):
+    #'''call class'''
     flip = Imgflip_Paths()
 
-    '''upload image'''
+    #'''upload image'''
     flip.click_new_template()
     flip.enter_image_link(image_link)
     flip.click_upload()
 
-    '''fill text'''
+    #'''fill text'''
     flip.enter_top_text(top_text)
     flip.enter_bottom_text(bottom_text)
 
-    '''generate meme, get link, and close driver'''
+    #'''generate meme, get link, and close driver'''
     flip.click_generate()
     result = str(flip.get_result())
     flip.driver.close()
     
-    '''send link to main.py'''
+    #'''send link to main.py'''
     return result
  
 
