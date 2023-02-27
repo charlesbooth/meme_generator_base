@@ -1,3 +1,3 @@
 # Meme Generator
 
-This uses Selenium and pyautogui to create top text bottom text memes automatticaly, given an image and text.
+This repository is mainly used to locally test the Meme Chef bot.
